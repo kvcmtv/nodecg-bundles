@@ -11,27 +11,41 @@
 			font-family: monospace;
 		}
 	</style>
+	<link href="tailwind.css" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500&display=swap" rel="stylesheet">
 </head>
-<body>
-	<p>
-		Hello, I'm one of the graphics in your bundle!
-		I'm where you put the graphics you want to run in your broadcast software!
-	</p>
-
-	<p>To edit me, open "<span id="path" class="monospace"></span>" in your favorite text editor or IDE.</p>
-
-	<p>You can use any libraries, frameworks, and tools you want. There are no limits.</p>
-
-	<p>Visit <a href="https://nodecg.com" target="_blank" rel="noopener">https://nodecg.com</a> for full documentation.</p>
-
-	<p>Have fun!</p>
-
+<body class="bg-green-500">
+	<div class="text-6xl flex items-center absolute h-20 top-20 left-20 -skew-x-[20deg]" id="container">
+		<div class="bg-black text-white p-4" id="home">
+			<span class="block skew-x-[20deg]" id="home-name">Loading...</span>
+		</div>
+		<div class="bg-white flex" id="score">
+			<span class="block skew-x-[20deg] p-4" id="home-score"></span>
+			<div class="bg-black inline-block w-2">&nbsp;</div>
+			<span class="block skew-x-[20deg] p-4" id="away-score"></span>
+		</div>
+		<div class="bg-black text-white p-4" id="away">
+			<span class="block skew-x-[20deg]" id="away-name">Make sure JS is enabled.</span>
+		</div>
+	</div>
 	<script>
-		document.getElementById('path').textContent = `nodecg${window.location.pathname}`;
+		const scores = nodecg.Replicant('scores');
 
-		// You can access the NodeCG api anytime from the `window.nodecg` object
-		// Or just `nodecg` for short. Like this!:
-		nodecg.log.info('Here\'s an example of using NodeCG\'s logging API!');
+		scores.on('change', value => {
+			document.getElementById('home-score').innerHTML = value[0].score
+			document.getElementById('away-score').innerHTML = value[1].score
+			
+			document.getElementById('home-name').innerHTML = value[0].name
+			document.getElementById('away-name').innerHTML = value[1].name
+
+			document.getElementById('home').style.backgroundColor = value[0].main
+			document.getElementById('home').style.color = value[0].text
+
+			document.getElementById('away').style.backgroundColor = value[1].main
+			document.getElementById('away').style.color = value[1].text
+		})
 	</script>
 </body>
 </html>
